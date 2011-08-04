@@ -1,4 +1,4 @@
-package org.codeswarm.providerproxy;
+package org.codeswarm.lazyproxy;
 
 public class ProxiesTest {
 

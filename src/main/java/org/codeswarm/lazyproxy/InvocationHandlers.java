@@ -1,4 +1,4 @@
-package org.codeswarm.providerproxy;
+package org.codeswarm.lazyproxy;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
