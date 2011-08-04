@@ -5,8 +5,8 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>provider-proxy</groupId>
-  <artifactId>provider-proxy</artifactId>
+  <groupId>org.codeswarm</groupId>
+  <artifactId>lazy-proxy</artifactId>
   <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
 
@@ -16,9 +16,9 @@
     <version>7</version>
   </parent>
 
-  <name>Provider Proxy</name>
+  <name>Lazy Proxy</name>
   <description><!-- TODO --></description>
-  <url>https://github.com/codeswarm/provider-proxy</url>
+  <url>https://github.com/codeswarm/lazy-proxy</url>
 
   <licenses>
     <license>
@@ -29,9 +29,9 @@
   </licenses>
 
   <scm>
-    <url>https://github.com/codeswarm/provider-proxy</url>
-    <connection>scm:git:git://github.com/codeswarm/provider-proxy.git</connection>
-    <developerConnection>scm:git:ssh://git@github.com/codeswarm/provider-proxy.git</developerConnection>
+    <url>https://github.com/codeswarm/lazy-proxy</url>
+    <connection>scm:git:git://github.com/codeswarm/lazy-proxy.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/codeswarm/lazy-proxy.git</developerConnection>
   </scm>
 
   <developers>
