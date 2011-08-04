@@ -1,6 +1,6 @@
 package org.codeswarm.providerproxy;
 
-public class ProviderInvocationHandlerTest {
+public class MemoizingCallableTest {
 
   // TODO
 

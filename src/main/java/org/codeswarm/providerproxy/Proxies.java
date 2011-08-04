@@ -2,11 +2,10 @@ package org.codeswarm.providerproxy;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
-
-import javax.inject.Provider;
+import java.util.concurrent.Callable;
 
 /**
- * Methods for creating {@link Proxy} instances.
+ * Methods for creating instances via {@link Proxy}.
  */
 public final class Proxies {
 
@@ -19,9 +18,8 @@ public final class Proxies {
    */
   @SuppressWarnings("unchecked")
   public static <T> T proxy(
-    Class<T> type,
-    InvocationHandler invocationHandler
-  ) {
+      Class<T> type, InvocationHandler invocationHandler) {
+
     return (T) Proxy.newProxyInstance(
       type.getClassLoader(),
       new Class[] { type },
@@ -30,32 +28,32 @@ public final class Proxies {
   }
 
   /**
-   * Returns a proxy that delegates to the result from a provider.
+   * Returns a proxy that delegates to the result from a callable.
    *
-   * {@link Provider#get()} is called at every invocation.
+   * {@link Callable#call()} is called at every invocation.
    * @param type type of returned proxy
-   * @param provider provider whose result to proxy
-   * @return a proxy that delegates to the result from a provider
+   * @param callable callable whose result will be proxied
+   * @return a proxy that delegates to the result from a callable
    */
-  public static <T> T providerProxy(
-    Class<T> type,
-    Provider<? extends T> provider
-  ) {
+  public static <T> T proxy(
+      Class<T> type, Callable<? extends T> callable) {
+
     return proxy(
       type,
-      InvocationHandlers.forProvider(provider)
+      InvocationHandlers.forCallable(callable)
     );
   }
 
-/**
-<p>Returns a proxy that delegates all invocations to an retrieved
-from {@link Provider#get()}, which is called exactly once
-(the first time a method is invoked on the proxy).</p>
-
-<p>This is useful for dealing with cyclic dependencies between
-constructor-injected classes. For example:</p>
-
-<blockquote><pre>{@code
+  /**
+   * <p>Returns a proxy that delegates all invocations to
+   * an object retrieved from {@link Callable#call()},
+   * which is called exactly once (the first time a method
+   * is invoked on the proxy).</p>
+   *
+   * <p>This is useful for dealing with cyclic dependencies
+   * between constructor-injected classes. For example:</p>
+   *
+   * <blockquote><pre>{@code
 
   class A {
     A(B b) { }
@@ -70,27 +68,26 @@ constructor-injected classes. For example:</p>
   }
 
   B b() {
-    return Proxies.memoProviderProxy(A.class, new Provider<B>() {
-      public B get() {
+    return Proxies.lazyProxy(A.class, new Callable<B>() {
+      public B call() {
         return new B(a());
       }
     });
   }
 
 }</pre></blockquote>
+  *
+  * @param type type of returned proxy
+  * @param callable provider whose result to proxy
+  * @return Returns a proxy that delegates all invocations
+  *         to a {@code T} retrieved from {@link Callable#call()}.
+  */
+  public static <T> T lazyProxy(
+      Class<T> type, Callable<? extends T> callable) {
 
-@param type type of returned proxy
-@param provider provider whose result to proxy
-@return Returns a proxy that delegates all invocations
-        to a {@code T} retrieved from {@link Provider#get()}.
-*/
-  public static <T> T memoizedProviderProxy(
-    Class<T> type,
-    Provider<? extends T> provider
-  ) {
-    return providerProxy(
+    return proxy(
       type,
-      Providers.memoize(provider)
+      Callables.memoize(callable)
     );
   }
 
